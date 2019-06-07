@@ -1,0 +1,30 @@
+version: "3.7"
+
+services:
+
+  petclinic:
+    build: .
+    container_name: petclinic-data-rest
+    networks:
+      - petclinic-docker
+    ports:
+      - 8080:8080
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-server
+    # networks:
+    #   - laravel-docker
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=petclinic
+      - MYSQL_USER=petclinic
+      - MYSQL_PASSWORD=petclinic
+    networks:
+      - petclinic-docker
+    ports:
+      - 3306:3306
+    volumes:
+        - ./src/main/resources/mysql:/docker-entrypoint-initdb.d
+networks:
+  petclinic-docker:
